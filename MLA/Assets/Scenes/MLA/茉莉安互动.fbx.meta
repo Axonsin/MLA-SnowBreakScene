@@ -1,0 +1,294 @@
+fileFormatVersion: 2
+guid: 95450f16a8dbd284da3deeebfb5e68d9
+ModelImporter:
+  serializedVersion: 22200
+  internalIDToNameTable: []
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Candle.001
+    second: {fileID: 2100000, guid: ad5a06fa732991c499ca5159fb0ca112, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: FOG
+    second: {fileID: 2100000, guid: a6925926433b0db43bd33ab21e2da7b4, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material
+    second: {fileID: 2100000, guid: e0505bb515dd7de4392ae0974297fe48, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material.001
+    second: {fileID: 2100000, guid: 7b4a49e4f65f69b40846bd21a19aa01b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material.002
+    second: {fileID: 2100000, guid: a61e443d022a1224eb3c523759ab7a42, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: MaterialInstanceDynamic_0.mat
+    second: {fileID: 2100000, guid: 8a21ee2a64912084194e20c3086d3d58, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: fog_transparent_004
+    second: {fileID: 2100000, guid: 07b2cfe8ea38dae4eb30bb567ed244fc, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: fog_transparent_004.001
+    second: {fileID: 2100000, guid: b6ceb9157df18464c9b89ea994b59320, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: fog_transparent_008
+    second: {fileID: 2100000, guid: bb1d230f64703034bb9b9b83c348388a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: fog_transparent_018
+    second: {fileID: 2100000, guid: dbd60153832cd8f48ad17fc378f4de65, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: fog_transparent_025
+    second: {fileID: 2100000, guid: 3fe0c10082a3b8549b5456a46fc052d9, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: girl005b_02_ma_wj001_t02_Inst.mat
+    second: {fileID: 2100000, guid: 43f403eb3f704574981efeac15fc1bf2, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: girl005b_02_ma_wj001_t03_Inst.mat
+    second: {fileID: 2100000, guid: b1cd7f89aee2e93408f24ab8c6b4a77a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: girl005b_02_ma_wj002_t01_Inst.mat
+    second: {fileID: 2100000, guid: 2c6061a7afca60640acce4571ab9501d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: girl005b_02_ma_wj003_t01_Inst.mat
+    second: {fileID: 2100000, guid: ebfb326403d660b41a3e5fe6ed854506, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: girl005b_02_ma_wj004_t01_Inst.mat
+    second: {fileID: 2100000, guid: c689d8a726bcdd445a2f161707f5a8cf, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: girl005b_02_ma_wj004_t02_Inst.mat
+    second: {fileID: 2100000, guid: c02d89d1b5f6330479d1b0a50974a36c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: girl005b_02_ma_wj004_t03_Inst.mat
+    second: {fileID: 2100000, guid: 59ed4258ffead344d8fb24bf1856c9af, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: girl005b_02_ma_wj005_t01_Inst.mat
+    second: {fileID: 2100000, guid: 348422c0a1f02f2418835e07f2297db6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: girl005b_02_ma_wj005_t02_Inst.mat
+    second: {fileID: 2100000, guid: 5ffe8df175273fc49bcea17f7ffaf2aa, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: girl005b_02_ma_wj005_t03_Inst.mat
+    second: {fileID: 2100000, guid: 6553e087d91614e49bb7b04a4bb8d36c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: girl005b_02_ma_wj006_t01_Inst.mat
+    second: {fileID: 2100000, guid: f28c80a7682bc32418f0c05b3e4b71b5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: girl005b_02_ma_wj007_t01_inst.mat
+    second: {fileID: 2100000, guid: 1fdbf5646847a93448ad69dfe73a21d3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: girl005b_02_ma_wj008_t01_Inst.mat
+    second: {fileID: 2100000, guid: b9fcb6a3086f3474b83cef35de3042f1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: girl005b_02_ma_wj009_t01_Inst.mat
+    second: {fileID: 2100000, guid: ff3f2f8cd37bdca40b039e42928b16fb, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: girl005b_02_ma_wj010_t01_Inst.mat
+    second: {fileID: 2100000, guid: ebf21db4c099f49418ccc93a3c66ad1e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: girl005b_02_ma_wj012_t04_Inst.mat
+    second: {fileID: 2100000, guid: 7e7e173a1ebd17542bd7d87434c61a4c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: girl005b_02_ma_wj013_t01_Inst.mat
+    second: {fileID: 2100000, guid: 335a9437355398b459e94e976ed3d012, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: girl005b_02_ma_wj014_t01_Inst.mat
+    second: {fileID: 2100000, guid: ee3f2338073c9c842baf8374e99247e4, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: girl005b_02_ma_wj014_t02_Inst.mat
+    second: {fileID: 2100000, guid: db9385a247bf0144d8785f49f21a8221, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: girl005b_t02_ma_wj012_03_Inst.mat
+    second: {fileID: 2100000, guid: cb5bd7db9209c9c49a8d15ae4fa5e304, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: gril015a_02_ma_prop05_t01c_Inst.mat
+    second: {fileID: 2100000, guid: c1f5330dcd7246e47a44c78ac406a004, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: gril015a_02_ma_prop05_t01d_Inst.mat
+    second: {fileID: 2100000, guid: 2b61d44b13ee2da46a29382f166f2a29, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: manifestation_girl015a_02_wj001_t04b_Inst.mat
+    second: {fileID: 2100000, guid: b12a25de335dae6469196801019b6829, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: manifestation_girl015a_02_wj002_t01b_Inst.mat
+    second: {fileID: 2100000, guid: a84217941f5ac5348a2fa19f3e1cf8b1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: manifestation_girl015a_02_wj002_t02_Inst.mat
+    second: {fileID: 2100000, guid: 46f3525bda1858342a1bcc223707c91a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: prop_general27c_inst.mat
+    second: {fileID: 2100000, guid: 6ad26def871a16d49901b0cffe587366, type: 2}
+  materials:
+    materialImportMode: 2
+    materialName: 2
+    materialSearch: 2
+    materialLocation: 0
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    removeConstantScaleCurves: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 0
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
+    importPhysicalCameras: 1
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    nodeNameCollisionStrategy: 1
+    fileIdsGeneration: 2
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    keepQuads: 0
+    weldVertices: 1
+    bakeAxisConversion: 0
+    preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    optimizeBones: 1
+    meshOptimizationFlags: -1
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 1
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    strictVertexDataChecks: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
+  importAnimation: 1
+  humanDescription:
+    serializedVersion: 3
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    globalScale: 1
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
+  animationType: 2
+  humanoidOversampling: 1
+  avatarSetup: 0
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 1
+  importBlendShapeDeformPercent: 1
+  remapMaterialsIfMaterialImportModeIsNone: 0
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
