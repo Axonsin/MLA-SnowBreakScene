@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: d82cc83b5e6f66e47ab7f4cbd76ac42e
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures:
+  - _BaseMap: {instanceID: 0}
+  - _BumpMap: {instanceID: 0}
+  - _ILMMap: {instanceID: 0}
+  - _RampMap: {instanceID: 0}
+  - _CombineMatcapMap: {instanceID: 0}
+  - _MatcapMultiMap: {instanceID: 0}
+  - _MatcapAdditiveMap: {instanceID: 0}
+  - _StockingMap: {instanceID: 0}
+  - _StockingMaskMap: {instanceID: 0}
+  - _SpecialHighlightMap: {instanceID: 0}
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

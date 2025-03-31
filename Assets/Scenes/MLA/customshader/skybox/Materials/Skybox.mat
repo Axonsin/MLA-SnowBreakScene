@@ -1,0 +1,66 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Skybox
+  m_Shader: {fileID: 4800000, guid: 946dec97f44cc254683986a9c88d20e0, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _ConstellationCubeMap:
+        m_Texture: {fileID: 8900000, guid: 88fc63f58a1ebf340b6536f79c0e6c40, type: 3}
+        m_Scale: {x: 0.01, y: 0.01}
+        m_Offset: {x: 5, y: 5}
+    - _MoonCubeMap:
+        m_Texture: {fileID: 8900000, guid: d2cc02d416856fd49838f5df47005c2c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NightSkyTexture:
+        m_Texture: {fileID: 2800000, guid: f589df648931b374a816e36a5a63bec5, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _StarCubeMap:
+        m_Texture: {fileID: 8900000, guid: 88fc63f58a1ebf340b6536f79c0e6c40, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SunViewGrad:
+        m_Texture: {fileID: 2800000, guid: bf672eec91015a5478a67907fdb65b47, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SunZenithGrad:
+        m_Texture: {fileID: 2800000, guid: 3aebb6cb53e4185419a6f16503288e45, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ViewZenithGrad:
+        m_Texture: {fileID: 2800000, guid: 86c4d3aa95beee74197a488a80bc2f47, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _MoonExposure: -5.9
+    - _MoonRadius: 0.34
+    - _StarExposure: -14.3
+    - _StarLatitude: -53.4
+    - _StarPower: 3.04
+    - _StarSpeed: 0.01
+    - _SunRadius: 0.045
+    m_Colors:
+    - _ConstellationColor: {r: 1, g: 1, b: 1, a: 1}
+    - _NightSkyColor: {r: 0, g: 0, b: 0, a: 1}
+  m_BuildTextureStacks: []
