@@ -16,8 +16,8 @@ Shader "Custom/SkinStockingsShader"
         _RampMap("渐变贴图", 2D) = "white" {}
         
         // Matcap相关
-        _MatcapAlphaMap("Matcap贴图A通道", 2D) = "white" {}
-        _MatcapRGBMap("Matcap贴图rgb通道", 2D) = "white"{}
+        _MatcapAlphaMap("高光Matcap贴图A通道", 2D) = "white" {}
+        _MatcapRGBMap("高光Matcap贴图rgb通道", 2D) = "white"{}
         _MatcapHighlightTint("Matcap高光色调", Color) = (1,1,1,1)
         _MatcapShadowTint("Matcap阴影色调", Color) = (0.5,0.5,0.5,1)
         
@@ -271,7 +271,7 @@ Shader "Custom/SkinStockingsShader"
                 float rimFactor = (oneMinusNdotV - rimThreshold) / (_RimlightThreshold - rimThreshold);
                 rimFactor = saturate(rimFactor);
                 rimFactor = rimFactor * rimFactor * (3.0 - 2.0 * rimFactor);
-                rimFactor = rimFactor * ilmMap.w;
+                rimFactor = rimFactor * ilmMap.y;
                 
                 // 阴影计算
                 float shadowOffset = ilmMap.y * _ShadingOffsetRemap.z + _ShadingOffsetRemap.w;
@@ -307,9 +307,11 @@ Shader "Custom/SkinStockingsShader"
                 // 阴影影响颜色
                 float3 shadowColor = rampColor * _DirShadowTint.rgb;
                 
-                // Matcap效果这一段的matcap主要是用于高光模拟
-                // float2 matcapUV = normalize(float3(input.viewReflectWS.xy, input.viewReflectWS.z + 1.0)).xy * 0.5 + 0.5;
-                float2 matcapUV = (input.viewReflectWS.xy * 0.5) + 0.5;
+                // Matcap效果 这一段的matcap主要是用于高光模拟
+                float3 viewReflectVS = mul((float3x3)UNITY_MATRIX_V, input.viewReflectWS);
+                float2 matcapUV = normalize(float3(viewReflectVS.xy, viewReflectVS.z + 1.0)).xy * 0.5 + 0.5;
+                //float2 matcapUV = normalize(float3(input.viewReflectWS.xy, input.viewReflectWS.z + 1.0)).xy * 0.5 + 0.5;
+                //float2 matcapUV = (input.viewReflectWS.xy * 0.5) + 0.5;
                 float matcapalpha = SAMPLE_TEXTURE2D(_MatcapAlphaMap, sampler_MatcapAlphaMap, matcapUV).a;
                 float3 matcap0 = SAMPLE_TEXTURE2D(_MatcapRGBMap, sampler_MatcapRGBMap, matcapUV).rgb;
                 
@@ -324,11 +326,12 @@ Shader "Custom/SkinStockingsShader"
                 matcapIntensity = saturate(matcapIntensity);
                 matcapIntensity = matcapAlpha * matcapIntensity;
                 
-                float3 matcapTint = lerp(_MatcapShadowTint.rgb, _MatcapHighlightTint.rgb, matcapIntensity);
+                // float3 matcapTint = lerp(_MatcapShadowTint.rgb, _MatcapHighlightTint.rgb, matcapIntensity);
+                float3 matcapTint = matcapColor*matcapIntensity;
                 
                 
                 // 应用Matcap和特殊高光到基础颜色
-                float3 colorWithMatcap = baseColor.rgb * matcapTint;
+                float3 colorWithMatcap = baseColor.rgb * (1.0 + matcapTint);
                 float3 finalBaseColor = colorWithMatcap;
                 
                 // 丝袜效果
@@ -372,7 +375,7 @@ Shader "Custom/SkinStockingsShader"
                 // 高光计算
                 float specPower = _Shininess * _Roughness + 1.0;
                 float specular = pow(saturate(NdotL), specPower);
-                float specularMask = ilmMap.z * _SpecularRemap.z + _SpecularRemap.w;
+                float specularMask = ilmMap.x;
                 specularMask = saturate(specularMask);
                 specular = saturate(specular - specularMask + _SpecularSize);
                 
@@ -402,7 +405,7 @@ Shader "Custom/SkinStockingsShader"
                 additionalLighting *= _AdditiveLightIntensity;
                 
                 // 边缘光
-                float rimShadow = finalShadow * _ShadowingRemap.z + _ShadowingRemap.w;
+                float rimShadow = finalShadow;
                 float3 rimLight = _ActualRimLightTint.rgb * rimFactor * rimShadow;
                 
                 // 加法Matcap
