@@ -6,6 +6,7 @@ Shader "Custom/CartoonFaceShader"
         _BaseColor ("Base Color", Color) = (1, 1, 1, 1)
         _BumpMap ("Normal Map", 2D) = "bump" {}
         _FaceShadingGradeMap ("Face Shadow Map", 2D) = "white" {}
+        _Compensationcolor("最弱环境光阴影补偿色",Color) = (1,1,1,1)
         
         [Header(Face Settings)]
         _FaceShadingOffset ("Face Shading Offset", Range(-1, 1)) = 0
@@ -75,6 +76,7 @@ Shader "Custom/CartoonFaceShader"
                 float4 _FaceLocalHeightBound;
                 float4 _CharacterForward;
                 float4 _CharacterUp;
+                float4 _Compensationcolor;
             CBUFFER_END
             
             Varyings vert(Attributes input)
@@ -170,7 +172,7 @@ Shader "Custom/CartoonFaceShader"
                         // 光源从左侧照射，使用左侧柔和过渡
                         softEdge = (shadowMapValueL - LeftL + _FaceShadingOffset) / max(0.0001, _FaceShadingSoftness);
                     } else {
-                        //更新并反转uv采样反方向的阴影图
+                        //更新并反转uv 采样反方向的阴影图
                         half4 faceShadowMapR = SAMPLE_TEXTURE2D(_FaceShadingGradeMap, sampler_FaceShadingGradeMap, float2((1-input.uv.x),input.uv.y));
                         float shadowMapValueR = 1-faceShadowMapR.r;
                         // 光源从右侧照射，使用右侧柔和过渡
@@ -185,14 +187,19 @@ Shader "Custom/CartoonFaceShader"
                 }
                 
                 // Apply face height gradient
-                float localHeight = input.positionLS.y * _FaceLocalHeightBound.x + _FaceLocalHeightBound.y;
-                half gradientFactor = saturate(pow(saturate((_FaceGradientOffset - localHeight) / _FaceGradientPow), 1.0 / _FaceGradientPow));
-                gradientFactor = gradientFactor * gradientFactor * (3.0 - 2.0 * gradientFactor); // Smoothstep
-                gradientFactor = gradientFactor * _FaceGradient;
+                // float localHeight = input.positionLS.y * _FaceLocalHeightBound.x + _FaceLocalHeightBound.y;
+                // half gradientFactor = saturate(pow(saturate((_FaceGradientOffset - localHeight) / _FaceGradientPow), 1.0 / _FaceGradientPow));
+                // gradientFactor = gradientFactor * gradientFactor * (3.0 - 2.0 * gradientFactor); // Smoothstep
+                // gradientFactor = gradientFactor * _FaceGradient;
                 
-                // Final face color calculation
-                half3 shadedColor = baseColor.rgb * mainLight.color * softShadow;
-                half3 finalColor = lerp(shadedColor, _FaceGradientColor.rgb, gradientFactor);
+                // 最后加在一起
+                half3 ambientLight = _Compensationcolor.rgb; // 使用补偿色调整环境光
+                half3 directLighting = baseColor.rgb * mainLight.color * softShadow;
+                half3 ambientLighting = baseColor.rgb * ambientLight;
+                half3 shadedColor = max(directLighting, ambientLighting);
+                // half3 shadedColor = ambientLighting + directLighting;
+                
+                half3 finalColor = lerp(shadedColor, _FaceGradientColor.rgb, 0.5);
                 
                 return half4(finalColor, baseColor.a);
             }
