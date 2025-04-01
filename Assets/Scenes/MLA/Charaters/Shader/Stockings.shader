@@ -129,7 +129,7 @@ Shader "Custom/SkinStockingsShader"
                 float _BumpScale;
                 float _CombineMatcap;
                 float _MatcapMultiplyEnable;
-                float4 _MatcapHightlightTint;
+                float4 _MatcapHighlightTint;
                 float4 _MatcapShadowTint;
                 float _MatcapMultiIntensity;
                 float _StockingEnable;
@@ -324,7 +324,7 @@ Shader "Custom/SkinStockingsShader"
                 matcapIntensity = saturate(matcapIntensity);
                 matcapIntensity = matcapAlpha * matcapIntensity;
                 
-                float3 matcapTint = lerp(_MatcapShadowTint.rgb, _MatcapHightlightTint.rgb, matcapIntensity);
+                float3 matcapTint = lerp(_MatcapShadowTint.rgb, _MatcapHighlightTint.rgb, matcapIntensity);
                 
                 
                 // 应用Matcap和特殊高光到基础颜色
