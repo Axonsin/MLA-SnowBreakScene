@@ -267,10 +267,18 @@ Shader "Custom/SkinStockingsShader"
                 
                 // 边缘光计算
                 float oneMinusNdotV = 1.0 - NdotV;
-                float rimThreshold = _RimlightThreshold - _RimlightFeather;
-                float rimFactor = (oneMinusNdotV - rimThreshold) / (_RimlightThreshold - rimThreshold);
-                rimFactor = saturate(rimFactor);
-                rimFactor = rimFactor * rimFactor * (3.0 - 2.0 * rimFactor);
+
+                // 定义边缘光的起始和结束阈值
+                float rimStart = _RimlightThreshold - _RimlightFeather; // 开始过渡的点
+                float rimEnd = _RimlightThreshold; // 结束过渡的点
+
+                // 在过渡区间内进行平滑插值
+                float rimFactor = smoothstep(rimStart, rimEnd, oneMinusNdotV);
+                // 或者手动实现smoothstep:
+                // float rimFactor = saturate((oneMinusNdotV - rimStart) / (rimEnd - rimStart));
+                // rimFactor = rimFactor * rimFactor * (3.0 - 2.0 * rimFactor); // 平滑过渡
+
+                // 应用ILM控制
                 rimFactor = rimFactor * ilmMap.y;
                 
                 // 阴影计算
@@ -406,7 +414,9 @@ Shader "Custom/SkinStockingsShader"
                 
                 // 边缘光
                 float rimShadow = finalShadow;
-                float3 rimLight = _ActualRimLightTint.rgb * rimFactor * rimShadow;
+                float3 rimLight = _ActualRimLightTint.rgb * rimFactor;
+                //float3 rimLight = _ActualRimLightTint.rgb * rimFactor * rimShadow;
+                //rimshadow出了问题
                 
                 // 加法Matcap
                 float matcapAddMask = ilmMap.z;
