@@ -16,15 +16,10 @@ Shader "Custom/SkinStockingsShader"
         _RampMap("渐变贴图", 2D) = "white" {}
         
         // Matcap相关
-        _CombineMatcap("组合Matcap开关", Range(0, 1)) = 0
-        _CombineMatcapMap("组合Matcap贴图", 2D) = "white" {}
-        _MatcapMultiMap("多重Matcap贴图", 2D) = "white" {}
-        _MatcapAdditiveMap("加法Matcap贴图", 2D) = "white" {}
-        _MatcapMultiplyEnable("多重Matcap启用", Range(0, 1)) = 0
-        _MatcapMultiTint("多重Matcap色调", Color) = (1,1,1,1)
-        _MatcapMultiShadowTint("多重Matcap阴影色调", Color) = (0.5,0.5,0.5,1)
-        _MatcapMultiRemap("多重Matcap重映射", Vector) = (0,1,0,1)
-        _MatcapMultiIntensity("多重Matcap强度", Range(0, 2)) = 1
+        _MatcapAlphaMap("Matcap贴图A通道", 2D) = "white" {}
+        _MatcapRGBMap("Matcap贴图rgb通道", 2D) = "white"{}
+        _MatcapHighlightTint("Matcap高光色调", Color) = (1,1,1,1)
+        _MatcapShadowTint("Matcap阴影色调", Color) = (0.5,0.5,0.5,1)
         
         // 丝袜相关
         _StockingMap("丝袜贴图", 2D) = "white" {}
@@ -126,8 +121,8 @@ Shader "Custom/SkinStockingsShader"
             TEXTURE2D(_ILMMap);             SAMPLER(sampler_ILMMap);
             TEXTURE2D(_RampMap);            SAMPLER(sampler_RampMap);
             TEXTURE2D(_CombineMatcapMap);   SAMPLER(sampler_CombineMatcapMap);
-            TEXTURE2D(_MatcapMultiMap);     SAMPLER(sampler_MatcapMultiMap);
-            TEXTURE2D(_MatcapAdditiveMap);  SAMPLER(sampler_MatcapAdditiveMap);
+            TEXTURE2D(_MatcapAlphaMap);     SAMPLER(sampler_MatcapAlphaMap);
+            TEXTURE2D(_MatcapRGBMap);  SAMPLER(sampler_MatcapRGBMap);
             TEXTURE2D(_StockingMap);        SAMPLER(sampler_StockingMap);
             TEXTURE2D(_StockingMaskMap);    SAMPLER(sampler_StockingMaskMap);
             TEXTURE2D(_SpecialHighlightMap); SAMPLER(sampler_SpecialHighlightMap);
@@ -141,9 +136,8 @@ Shader "Custom/SkinStockingsShader"
                 float _BumpScale;
                 float _CombineMatcap;
                 float _MatcapMultiplyEnable;
-                float4 _MatcapMultiTint;
-                float4 _MatcapMultiShadowTint;
-                float4 _MatcapMultiRemap;
+                float4 _MatcapHightlightTint;
+                float4 _MatcapShadowTint;
                 float _MatcapMultiIntensity;
                 float _StockingEnable;
                 float4 _StockingColor;
@@ -184,7 +178,6 @@ Shader "Custom/SkinStockingsShader"
                 float4 _ActualEmissionTint;
                 float _AdditiveLightIntensity;
                 float4 _ShadowingRemap;
-                float4 _MatcapAdditiveMaskRemap;
                 float4 _ActualMatcapAdditiveTint;
                 float _MatcapAdditiveAmount;
             CBUFFER_END
@@ -321,31 +314,24 @@ Shader "Custom/SkinStockingsShader"
                 // 阴影影响颜色
                 float3 shadowColor = rampColor * _DirShadowTint.rgb;
                 
-                // Matcap效果
-                float2 matcapUV = normalize(float3(input.viewReflectWS.xy, input.viewReflectWS.z + 1.0)).xy * 0.5 + 0.5;
-                float4 matcapCombine = SAMPLE_TEXTURE2D(_CombineMatcapMap, sampler_CombineMatcapMap, matcapUV);
-                float matcapMulti = SAMPLE_TEXTURE2D(_MatcapMultiMap, sampler_MatcapMultiMap, matcapUV).r;
-                float3 matcapAdd = SAMPLE_TEXTURE2D(_MatcapAdditiveMap, sampler_MatcapAdditiveMap, matcapUV).rgb;
+                // Matcap效果这一段的matcap主要是用于高光模拟
+                // float2 matcapUV = normalize(float3(input.viewReflectWS.xy, input.viewReflectWS.z + 1.0)).xy * 0.5 + 0.5;
+                float2 matcapUV = (input.viewReflectWS.xy * 0.5) + 0.5;
+                float matcapalpha = SAMPLE_TEXTURE2D(_MatcapAlphaMap, sampler_MatcapAlphaMap, matcapUV).a;
+                float3 matcap0 = SAMPLE_TEXTURE2D(_MatcapRGBMap, sampler_MatcapRGBMap, matcapUV).rgb;
                 
                 float3 matcapColor;
                 float matcapAlpha;
                 
-                if (_CombineMatcap > 0.5) {
-                    matcapColor = matcapCombine.rgb;
-                    matcapAlpha = matcapCombine.a;
-                } else {
-                    matcapColor = matcapAdd.rgb;
-                    matcapAlpha = matcapMulti;
-                }
+                matcapColor = matcap0.rgb;
+                matcapAlpha = matcapalpha;
                 
                 // 计算Matcap效果影响
-                float matcapIntensity = ilmMap.x * _MatcapMultiRemap.z + _MatcapMultiRemap.w;
+                float matcapIntensity = ilmMap.x;
                 matcapIntensity = saturate(matcapIntensity);
                 matcapIntensity = matcapAlpha * matcapIntensity;
                 
-                float3 matcapTint = lerp(_MatcapMultiShadowTint.rgb, _MatcapMultiTint.rgb, matcapIntensity);
-                matcapTint = matcapTint * _MatcapMultiIntensity + float3(-1.0, -1.0, -1.0);
-                matcapTint = matcapTint * _MatcapMultiplyEnable * matcapIntensity + float3(1.0, 1.0, 1.0);
+                float3 matcapTint = lerp(_MatcapShadowTint.rgb, _MatcapHightlightTint.rgb, matcapIntensity);
                 
                 // 特殊高光计算
                 float2 specialHighlightUV = uv + viewDirWS.xy * _ParallaxScale;
@@ -435,7 +421,7 @@ Shader "Custom/SkinStockingsShader"
                 float3 rimLight = _ActualRimLightTint.rgb * rimFactor * rimShadow;
                 
                 // 加法Matcap
-                float matcapAddMask = ilmMap.z * _MatcapAdditiveMaskRemap.z + _MatcapAdditiveMaskRemap.w;
+                float matcapAddMask = ilmMap.z;
                 matcapAddMask = saturate(matcapAddMask);
                 float3 matcapAddColor = matcapColor * matcapAddMask * _ActualMatcapAdditiveTint.rgb * _MatcapAdditiveAmount;
                 
