@@ -48,12 +48,6 @@ Shader "Custom/SkinStockingsShader"
         _BaseColorAffected("基础颜色影响", Range(0, 1)) = 0.5
         _SpecularAttenRemap("高光衰减重映射", Vector) = (0,1,0,1)
         
-        // 特殊高光
-        _SpecialHighlightMap("特殊高光贴图", 2D) = "white" {}
-        _SpecialHighlightEnable("特殊高光启用", Range(0, 1)) = 0
-        _ParallaxScale("视差缩放", Range(0, 0.1)) = 0.02
-        _HighlightSize("高光大小", Range(0, 1)) = 0.5
-        _ActualSpecialHighlightTint("实际特殊高光色调", Color) = (1,1,1,1)
         
         // 阴影相关
         _SelfShadowEnable("自阴影启用", Range(0, 1)) = 1
@@ -125,7 +119,6 @@ Shader "Custom/SkinStockingsShader"
             TEXTURE2D(_MatcapRGBMap);  SAMPLER(sampler_MatcapRGBMap);
             TEXTURE2D(_StockingMap);        SAMPLER(sampler_StockingMap);
             TEXTURE2D(_StockingMaskMap);    SAMPLER(sampler_StockingMaskMap);
-            TEXTURE2D(_SpecialHighlightMap); SAMPLER(sampler_SpecialHighlightMap);
             TEXTURE2D(_CameraDepthTexture); SAMPLER(sampler_CameraDepthTexture);
             
             // 常量缓冲区
@@ -333,18 +326,10 @@ Shader "Custom/SkinStockingsShader"
                 
                 float3 matcapTint = lerp(_MatcapShadowTint.rgb, _MatcapHightlightTint.rgb, matcapIntensity);
                 
-                // 特殊高光计算
-                float2 specialHighlightUV = uv + viewDirWS.xy * _ParallaxScale;
-                float2 specialHighlightOffset = SAMPLE_TEXTURE2D(_SpecialHighlightMap, sampler_SpecialHighlightMap, specialHighlightUV).yz;
-                specialHighlightOffset = specialHighlightOffset * 2.0 - 1.0;
-                float2 specialHighlightUVOffset = -specialHighlightOffset * 0.01 * _HighlightSize;
-                float specialHighlight = SAMPLE_TEXTURE2D(_SpecialHighlightMap, sampler_SpecialHighlightMap, 
-                                        specialHighlightUV + specialHighlightUVOffset).x;
-                specialHighlight = specialHighlight * _SpecialHighlightEnable;
                 
                 // 应用Matcap和特殊高光到基础颜色
                 float3 colorWithMatcap = baseColor.rgb * matcapTint;
-                float3 finalBaseColor = lerp(colorWithMatcap, _ActualSpecialHighlightTint.rgb, specialHighlight);
+                float3 finalBaseColor = colorWithMatcap;
                 
                 // 丝袜效果
                 float4 stockingColor = SAMPLE_TEXTURE2D(_StockingMap, sampler_StockingMap, uv) * _StockingColor;
