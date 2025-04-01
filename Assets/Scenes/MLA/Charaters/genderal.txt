@@ -12,16 +12,19 @@ Shader "Custom/SkinStockingsShader"
         _BumpScale("法线强度", Range(0, 2)) = 1.0
         
         // ILM贴图和光照映射
+        [Header(ILM)]
         _ILMMap("ILM贴图", 2D) = "white" {}
         _RampMap("渐变贴图", 2D) = "white" {}
         
         // Matcap相关
+        [Header(Matcap)]
         _MatcapAlphaMap("高光Matcap贴图A通道", 2D) = "white" {}
         _MatcapRGBMap("高光Matcap贴图rgb通道", 2D) = "white"{}
         _MatcapHighlightTint("Matcap高光色调", Color) = (1,1,1,1)
         _MatcapShadowTint("Matcap阴影色调", Color) = (0.5,0.5,0.5,1)
         
         // 丝袜相关
+        [Header(Stocking)]
         _StockingMap("丝袜贴图", 2D) = "white" {}
         _StockingMaskMap("丝袜蒙版贴图", 2D) = "white" {}
         _StockingEnable("丝袜启用", Range(0, 1)) = 1
@@ -36,10 +39,12 @@ Shader "Custom/SkinStockingsShader"
         _StockingThickness("丝袜厚度", Range(0, 1)) = 0.5
         
         // 皮肤相关
+        [Header(Skin)]
         _SkinPower("皮肤效果强度", Range(0, 10)) = 1
         _SkinTransmittanceTint("皮肤透射色调", Color) = (1,0.5,0.3,1)
         
         // 高光相关
+        [Header(Specular)]
         _Shininess("光泽度", Range(0, 1)) = 0.7
         _SpecularRemap("高光重映射", Vector) = (0,1,0,1)
         _SpecularSize("高光大小", Range(0, 1)) = 1
@@ -49,6 +54,7 @@ Shader "Custom/SkinStockingsShader"
         
         
         // 阴影相关
+        [Header(Shadow)]
         _SelfShadowEnable("自阴影启用", Range(0, 1)) = 1
         _ShadingOffsetRemap("阴影偏移重映射强度", Range(0,0.5)) = 0.1
         _ShadingOffsetStrength("阴影偏移强度", Range(0, 1)) = 0.5
@@ -58,17 +64,25 @@ Shader "Custom/SkinStockingsShader"
         _DirShadowTint("方向阴影色调", Color) = (0.5,0.5,0.5,1)
         _ShadowAffectRemap("阴影影响重映射", Vector) = (0,1,0,1)
         
+        
+        //描边相关
+        [Header(Outline)]
+        _OutlineWidth ("Outline Width", Range(0, 0.5)) = 0.02
+        _OutlineColor ("Outline Color", Color) = (0.5, 0.5, 0.5, 1)
+        _OutlineZOffset ("Z Offset", Range(0, 1)) = 0.0001
+        _OutlineMask ("Outline Mask (黑色区域不显示描边)", 2D) = "white" {}
+        
         // 边缘光相关
+        [Header(Rimlight)]
         _ScreenSpaceRimShadowEnable("屏幕空间边缘阴影启用", Range(0, 1)) = 0
         _DisableScreenSpaceRim("启用屏幕空间边缘光", Range(0, 1)) = 0
         _ActualRimLightTint("实际边缘光色调", Color) = (1,1,1,1)
         _RimlightThreshold("边缘光阈值", Range(0, 1)) = 0.5
         _RimlightFeather("边缘光羽化", Range(0, 1)) = 0.1
         
-        // 发光相关
+        // 发光相关和附加光
+        [Header(Emission_AdditiveLight)]
         _ActualEmissionTint("实际发光色调", Color) = (0,0,0,0)
-        
-        // 附加光相关
         _AdditiveLightIntensity("附加光强度", Range(0, 2)) = 1
     }
     
@@ -83,9 +97,10 @@ Shader "Custom/SkinStockingsShader"
         
         LOD 300
 
+        
         Pass
         {
-            Name "ForwardLit"
+            Name "BLHX_General"
             Tags { "LightMode" = "UniversalForward" }
             
             Blend Off
@@ -449,6 +464,8 @@ Shader "Custom/SkinStockingsShader"
             ENDHLSL
         }
         
+        //Outline Pass
+
         // ShadowCaster Pass
         Pass
         {
@@ -649,6 +666,8 @@ Shader "Custom/SkinStockingsShader"
             }
             ENDHLSL
         }
+
+
     }
     
     FallBack "Universal Render Pipeline/Lit"

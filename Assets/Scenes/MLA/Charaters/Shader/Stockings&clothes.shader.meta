@@ -7,12 +7,11 @@ ShaderImporter:
   - _BumpMap: {instanceID: 0}
   - _ILMMap: {instanceID: 0}
   - _RampMap: {instanceID: 0}
-  - _CombineMatcapMap: {instanceID: 0}
-  - _MatcapMultiMap: {instanceID: 0}
-  - _MatcapAdditiveMap: {instanceID: 0}
+  - _MatcapAlphaMap: {instanceID: 0}
+  - _MatcapRGBMap: {instanceID: 0}
   - _StockingMap: {instanceID: 0}
   - _StockingMaskMap: {instanceID: 0}
-  - _SpecialHighlightMap: {instanceID: 0}
+  - _OutlineMask: {instanceID: 0}
   nonModifiableTextures: []
   userData: 
   assetBundleName: 

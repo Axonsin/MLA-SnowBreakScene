@@ -10,14 +10,19 @@ Shader "Custom/CartoonFaceShader"
         
         [Header(Face Settings)]
         _FaceShadingOffset ("Face Shading Offset", Range(-1, 1)) = 0
-        _FaceShadingSoftness ("Face Shading Softness", Range(0, 1)) = 0.1
+        _FaceShadingSoftness ("Face Shading Softness", Range(0, 0.1)) = 0.02
         _FaceGradient ("Face Gradient Intensity", Range(0, 1)) = 0.5
         _FaceGradientColor ("Face Gradient Color", Color) = (1, 0.8, 0.8, 1)
         _FaceGradientOffset ("Face Gradient Offset", Range(-1, 1)) = 0
         _FaceLocalHeightBound ("Face Local Height Bound (X:Scale, Y:Offset)", Vector) = (1, 0, 0, 0)
-        
         _CharacterForward ("Character Forward", Vector) = (0, 0, -1, 0)
         _CharacterUp ("Character Up", Vector) = (0, 1, 0, 0)
+        
+         [Header(Outline)]
+        _OutlineWidth ("Outline Width", Range(0, 0.5)) = 0.02
+        _OutlineColor ("Outline Color", Color) = (0.5, 0.5, 0.5, 1)
+        _OutlineZOffset ("Z Offset", Range(0, 1)) = 0.0001
+        _OutlineMask ("Outline Mask (黑色区域不显示描边)", 2D) = "white" {}
     }
     
     SubShader
@@ -202,6 +207,85 @@ Shader "Custom/CartoonFaceShader"
                 half3 finalColor = lerp(shadedColor, _FaceGradientColor.rgb, 0.5);
                 
                 return half4(finalColor, baseColor.a);
+            }
+            ENDHLSL
+        }
+        // 轮廓描边Pass
+        Pass
+        {
+            Name "Outline"
+            Tags { }
+            
+            Cull Front // 剔除正面，只渲染背面
+            
+            HLSLPROGRAM
+            #pragma vertex OutlineVert
+            #pragma fragment OutlineFrag
+            
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+            
+            struct Attributes
+            {
+                float4 positionOS : POSITION;
+                float3 normalOS : NORMAL;
+                float2 uv : TEXCOORD0;
+            };
+            
+            struct Varyings
+            {
+                float4 positionCS : SV_POSITION;
+                float2 uv : TEXCOORD0;
+            };
+            
+            TEXTURE2D(_BaseMap);
+            SAMPLER(sampler_BaseMap);
+            TEXTURE2D(_OutlineMask);
+            SAMPLER(sampler_OutlineMask);
+            
+            CBUFFER_START(UnityPerMaterial)
+                float4 _BaseMap_ST;
+                float _OutlineWidth;
+                float4 _OutlineColor;
+                float _OutlineZOffset;
+            CBUFFER_END
+            
+            Varyings OutlineVert(Attributes input)
+            {
+                Varyings output;
+                
+                // 采样轮廓遮罩
+                float2 uv = TRANSFORM_TEX(input.uv, _BaseMap);
+                float outlineMask = SAMPLE_TEXTURE2D_LOD(_OutlineMask, sampler_OutlineMask, uv, 0).g;
+                
+                // 将顶点沿法线方向扩张
+                float3 posOS = input.positionOS.xyz;
+                float3 normalOS = normalize(input.normalOS);
+                
+                // 根据遮罩调整轮廓宽度
+                float outlineWidth = _OutlineWidth * 0.01 * outlineMask;
+                
+                // 将顶点沿法线方向扩展
+                posOS += normalOS * outlineWidth;
+                
+                // 变换到裁剪空间
+                VertexPositionInputs vertexInput = GetVertexPositionInputs(posOS);
+                output.positionCS = vertexInput.positionCS;
+                
+                // 应用Z偏移以避免Z-Fighting
+                #if UNITY_REVERSED_Z
+                    output.positionCS.z -= _OutlineZOffset * output.positionCS.w;
+                #else
+                    output.positionCS.z += _OutlineZOffset * output.positionCS.w;
+                #endif
+                
+                output.uv = uv;
+                return output;
+            }
+            
+            half4 OutlineFrag(Varyings input) : SV_Target
+            {
+                // 简单地返回轮廓颜色
+                return _OutlineColor;
             }
             ENDHLSL
         }
