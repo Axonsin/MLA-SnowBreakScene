@@ -41,27 +41,26 @@ Shader "Custom/SkinStockingsShader"
         
         // 高光相关
         _Shininess("光泽度", Range(0, 1)) = 0.7
-        _Roughness("粗糙度", Range(0, 1)) = 0.5
         _SpecularRemap("高光重映射", Vector) = (0,1,0,1)
-        _SpecularSize("高光大小", Range(0, 1)) = 0.5
+        _SpecularSize("高光大小", Range(0, 1)) = 1
         _ActualSpecularTint("实际高光色调", Color) = (1,1,1,1)
         _BaseColorAffected("基础颜色影响", Range(0, 1)) = 0.5
-        _SpecularAttenRemap("高光衰减重映射", Vector) = (0,1,0,1)
+        _SpecularAttenRemap("高光衰减重映射", Vector) = (0,0,1,0)
         
         
         // 阴影相关
         _SelfShadowEnable("自阴影启用", Range(0, 1)) = 1
-        _ShadingOffsetRemap("阴影偏移重映射", Vector) = (0,1,0,1)
+        _ShadingOffsetRemap("阴影偏移重映射强度", Range(0,0.5)) = 0.1
         _ShadingOffsetStrength("阴影偏移强度", Range(0, 1)) = 0.5
         _DirShadowEnable("方向阴影启用", Range(0, 1)) = 1
-        _DirShadowRemap("方向阴影重映射", Vector) = (0,1,0,1)
+        _DirShadowRemap("方向阴影重映射", Range(0,0.5)) = 0.1
         _DirShadowStrength("方向阴影强度", Range(0, 1)) = 1
         _DirShadowTint("方向阴影色调", Color) = (0.5,0.5,0.5,1)
         _ShadowAffectRemap("阴影影响重映射", Vector) = (0,1,0,1)
         
         // 边缘光相关
         _ScreenSpaceRimShadowEnable("屏幕空间边缘阴影启用", Range(0, 1)) = 0
-        _DisableScreenSpaceRim("禁用屏幕空间边缘光", Range(0, 1)) = 0
+        _DisableScreenSpaceRim("启用屏幕空间边缘光", Range(0, 1)) = 0
         _ActualRimLightTint("实际边缘光色调", Color) = (1,1,1,1)
         _RimlightThreshold("边缘光阈值", Range(0, 1)) = 0.5
         _RimlightFeather("边缘光羽化", Range(0, 1)) = 0.1
@@ -145,7 +144,6 @@ Shader "Custom/SkinStockingsShader"
                 float _SkinPower;
                 float4 _SkinTransmittanceTint;
                 float _Shininess;
-                float _Roughness;
                 float4 _SpecularRemap;
                 float _SpecularSize;
                 float4 _ActualSpecularTint;
@@ -156,10 +154,10 @@ Shader "Custom/SkinStockingsShader"
                 float _HighlightSize;
                 float4 _ActualSpecialHighlightTint;
                 float _SelfShadowEnable;
-                float4 _ShadingOffsetRemap;
+                float _ShadingOffsetRemap;
                 float _ShadingOffsetStrength;
                 float _DirShadowEnable;
-                float4 _DirShadowRemap;
+                float _DirShadowRemap;
                 float _DirShadowStrength;
                 float4 _DirShadowTint;
                 float4 _ShadowAffectRemap;
@@ -171,8 +169,6 @@ Shader "Custom/SkinStockingsShader"
                 float4 _ActualEmissionTint;
                 float _AdditiveLightIntensity;
                 float4 _ShadowingRemap;
-                float4 _ActualMatcapAdditiveTint;
-                float _MatcapAdditiveAmount;
             CBUFFER_END
             
             // 顶点着色器输入
@@ -281,24 +277,25 @@ Shader "Custom/SkinStockingsShader"
                 // 应用ILM控制
                 rimFactor = rimFactor * ilmMap.y;
                 
-                // 阴影计算
-                float shadowOffset = ilmMap.y * _ShadingOffsetRemap.z + _ShadingOffsetRemap.w;
+               // 阴影因子计算
+                float shadowOffset = ilmMap.y * _ShadingOffsetRemap;
                 shadowOffset = saturate(shadowOffset);
                 shadowOffset = shadowOffset - 1.0;
                 shadowOffset = _ShadingOffsetStrength * shadowOffset + 1.0;
                 float shadowFactor = NdotL * shadowOffset;
                 shadowFactor = saturate(shadowFactor);
-                
+
                 // 方向阴影
                 float dirShadow = mainLight.shadowAttenuation;
-                dirShadow = dirShadow * _DirShadowRemap.z + _DirShadowRemap.w;
+                dirShadow = dirShadow * _DirShadowRemap;
                 dirShadow = saturate(dirShadow);
                 dirShadow = dirShadow - 1.0;
-                dirShadow = _DirShadowStrength * _DirShadowEnable * dirShadow;
+                // 修正：加回1.0，使范围与shadowOffset一致
+                dirShadow = _DirShadowStrength * _DirShadowEnable * dirShadow + 1.0;
                 
                 
                 // 最终阴影因子
-                float finalShadow = shadowFactor * dirShadow;
+                float finalShadow = shadowFactor * dirShadow*_SelfShadowEnable;
                 
                 // 渐变贴图采样
                 float2 rampUV;
@@ -312,8 +309,8 @@ Shader "Custom/SkinStockingsShader"
                 // 采样渐变贴图
                 float3 rampColor = SAMPLE_TEXTURE2D(_RampMap, sampler_RampMap, rampUV).rgb;
                 
-                // 阴影影响颜色
-                float3 shadowColor = rampColor * _DirShadowTint.rgb;
+                // 阴影ramp影响颜色
+                float3 shadowColor = rampColor;
                 
                 // Matcap效果 这一段的matcap主要是用于高光模拟
                 float3 viewReflectVS = mul((float3x3)UNITY_MATRIX_V, input.viewReflectWS);
@@ -334,8 +331,8 @@ Shader "Custom/SkinStockingsShader"
                 matcapIntensity = saturate(matcapIntensity);
                 matcapIntensity = matcapAlpha * matcapIntensity;
                 
-                // float3 matcapTint = lerp(_MatcapShadowTint.rgb, _MatcapHighlightTint.rgb, matcapIntensity);
-                float3 matcapTint = matcapColor*matcapIntensity;
+                float3 matcapTint = lerp(_MatcapShadowTint.rgb, _MatcapHighlightTint.rgb, matcapIntensity);
+                //float3 matcapTint = matcapColor*matcapIntensity;
                 
                 
                 // 应用Matcap和特殊高光到基础颜色
@@ -381,12 +378,15 @@ Shader "Custom/SkinStockingsShader"
                 float3 finalDiffuse = lerp(finalBaseColor * shadowColor, skinStockingColor, stockingMask.x * _StockingEnable);
                 
                 // 高光计算
-                float specPower = _Shininess * _Roughness + 1.0;
-                float specular = pow(saturate(NdotL), specPower);
-                float specularMask = ilmMap.x;
-                specularMask = saturate(specularMask);
-                specular = saturate(specular - specularMask + _SpecularSize);
-                
+                float3 viewDir = normalize(_WorldSpaceCameraPos - input.positionWS);
+                float3 halfVector = normalize(input.lightDirWS + viewDir);
+                float NdotH = max(dot(input.normalWS, halfVector), 0.0);
+                float specPower = exp2(_Shininess * 11.0) + 1.0; // 更符合物理的高光指数映射
+                float specular = pow(NdotH, specPower);
+
+                //蒙版指定增强高光
+                float specularMask = ilmMap.z;
+                specular = specular * specularMask * _SpecularSize;
                 // 阴影对高光的影响
                 float specShadowMask = finalShadow * _ShadowAffectRemap.z + _ShadowAffectRemap.w;
                 specular = specular * specShadowMask;
@@ -414,22 +414,23 @@ Shader "Custom/SkinStockingsShader"
                 
                 // 边缘光
                 float rimShadow = finalShadow;
-                float3 rimLight = _ActualRimLightTint.rgb * rimFactor;
+                float3 rimLight = _ActualRimLightTint.rgb * rimFactor*_DisableScreenSpaceRim;
                 //float3 rimLight = _ActualRimLightTint.rgb * rimFactor * rimShadow;
                 //rimshadow出了问题
                 
                 // 加法Matcap
-                float matcapAddMask = ilmMap.z;
+                float matcapAddMask = ilmMap.x;
                 matcapAddMask = saturate(matcapAddMask);
-                float3 matcapAddColor = matcapColor * matcapAddMask * _ActualMatcapAdditiveTint.rgb * _MatcapAdditiveAmount;
+                float3 matcapAddColor = matcapColor * matcapAddMask;
                 
                 // 最终颜色计算
                 float3 finalColor = finalDiffuse * mainLightColor;
                  finalColor += baseColor.rgb * additionalLighting * 0.318309873;
                 //finalColor += specularColor * mainLightColor;
-                 finalColor += _ActualEmissionTint.rgb * baseColor.a;
+                finalColor += specularColor * 1;
+                 finalColor += _ActualEmissionTint.rgb * baseColor.rgb;
                  finalColor += rimLight;
-                finalColor = max(finalColor, matcapAddColor);
+                finalColor = finalColor + matcapAddColor*0.1;
                 
                 // 最终透明度计算
                 float finalAlpha;
