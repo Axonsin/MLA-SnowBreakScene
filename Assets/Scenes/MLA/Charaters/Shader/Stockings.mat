@@ -96,6 +96,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _OutlineMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _ParallaxMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -163,6 +167,8 @@ Material:
     - _MatcapMultiplyEnable: 0
     - _Metallic: 0
     - _OcclusionStrength: 1
+    - _OutlineWidth: 0.00005
+    - _OutlineZOffset: 0.0001
     - _Parallax: 0.005
     - _ParallaxScale: 0.02
     - _QueueOffset: 0
@@ -202,11 +208,12 @@ Material:
     - _DirShadowRemap: {r: 11111, g: 0, b: 1, a: 0}
     - _DirShadowTint: {r: 1, g: 0, b: 0, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _MatcapHighlightTint: {r: 1, g: 1, b: 1, a: 1}
+    - _MatcapHighlightTint: {r: 0, g: 0, b: 0, a: 1}
     - _MatcapMultiRemap: {r: 0, g: 1, b: 0, a: 1}
     - _MatcapMultiShadowTint: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _MatcapMultiTint: {r: 1, g: 1, b: 1, a: 1}
     - _MatcapShadowTint: {r: 0, g: 0, b: 0, a: 1}
+    - _OutlineColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _ShadingOffsetRemap: {r: 0, g: 1, b: 0, a: 1}
     - _ShadowAffectRemap: {r: 0, g: 1, b: 1, a: 1}
     - _SkinTransmittanceTint: {r: 1, g: 1, b: 1, a: 1}

@@ -157,8 +157,8 @@ Material:
     - _Metallic: 0
     - _MirrorU: 0
     - _OcclusionStrength: 1
-    - _OutlineWidth: 0.023
-    - _OutlineZOffset: 0
+    - _OutlineWidth: 0.114
+    - _OutlineZOffset: 0.023
     - _Parallax: 0.005
     - _QueueOffset: 0
     - _ReceiveShadows: 1
@@ -193,7 +193,7 @@ Material:
     - _CharacterForward: {r: 0, g: 0, b: -1, a: 0}
     - _CharacterUp: {r: 0, g: 1, b: 0, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _Compensationcolor: {r: 0.81761, g: 0.81761, b: 0.81761, a: 1}
+    - _Compensationcolor: {r: 0.7484276, g: 0.68958896, b: 0.68958896, a: 1}
     - _DirShadowTint: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _FaceCenterUvAndExtend: {r: 0.5, g: 0.5, b: 0.5, a: 0.5}
@@ -203,7 +203,7 @@ Material:
     - _HeadRight: {r: 1, g: 0, b: 0, a: 0}
     - _MatcapHighlightTint: {r: 1, g: 1, b: 1, a: 1}
     - _MatcapShadowTint: {r: 1, g: 1, b: 1, a: 1}
-    - _OutlineColor: {r: 0, g: 0, b: 0, a: 1}
+    - _OutlineColor: {r: 0.8742138, g: 0.48659062, b: 0.48659062, a: 1}
     - _ShadowAffectRemap: {r: 0, g: 1, b: 0, a: 1}
     - _SkinTransmittanceTint: {r: 1, g: 0.5, b: 0.29999998, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
